@@ -1,0 +1,82 @@
+{
+  "version": "1.0",
+  "updated": "2026-09-20",
+  "items": [
+    {
+      "title": "نام کالا اینجا",
+      "code": "2000-XXX-0001",
+      "group": "Capasitor",
+      "specs": "مشخصات فنی",
+      "commercial": "کد تجاری",
+      "manufacturer": "سازنده",
+      "family": "خانواده",
+      "amount": "",
+      "voltage": "",
+      "extra1": "",
+      "extra2": "",
+      "helper": "",
+      "search": "کلمات جستجو عنوان کد گروه",
+      "stock": 40
+    },
+    {
+      "title": "مثال دوم",
+      "code": "2000-XXX-0002",
+      "group": "RESISTOR",
+      "specs": "",
+      "commercial": "",
+      "manufacturer": "",
+      "family": "",
+      "amount": "",
+      "voltage": "",
+      "extra1": "",
+      "extra2": "",
+      "helper": "",
+      "search": "مثال دوم 2000-xxx-0002 resistor",
+      "stock": 100
+    }
+  ],
+  "warehouse": {
+    "انبار الکترونیک": [
+      "Capasitor",
+      "RESISTOR",
+      "Diode",
+      "IC",
+      "LED",
+      "Lamp",
+      "LAMP",
+      "Transistor",
+      "Mosfet",
+      "Connector",
+      "PIN Header",
+      "Crystal",
+      "Inductor",
+      "Ferrite",
+      "Filter",
+      "FUSE",
+      "Relay",
+      "Sensor",
+      "Source",
+      "Switch",
+      "Dip Switch",
+      "Optocouplers",
+      "PCB",
+      "Regulator",
+      "Varistor",
+      "WIR",
+      "Battery"
+    ],
+    "انبار مکانیک": [
+      "Mecanik",
+      "ابزار"
+    ],
+    "انبار لوازم مصرفی": [
+      "مصرفي",
+      "ابزار مصرفي",
+      "ابزار مصرفی",
+      "Hardware / consumable",
+      "Hardware/consumable",
+      "اموال",
+      "Toolse"
+    ]
+  }
+}
