@@ -101,12 +101,19 @@
     line-height: 1.3;
   }
   .clk-miladi {
-    font-size: 0.95rem;
-    font-weight: 600;
+    font-size: 1.22rem;
+    font-weight: 700;
     letter-spacing: 0.06em;
-    color: rgba(255, 255, 255, 0.82);
+    color: rgba(255, 255, 255, 0.9);
     font-variant-numeric: tabular-nums;
-    line-height: 1.2;
+    line-height: 1.25;
+    margin-top: 2mm;
+  }
+  .clk-shamsi {
+    margin-bottom: 0;
+  }
+  .header-clock {
+    gap: 2mm;
   }
   .clk-time {
     margin-top: 2px;
@@ -280,25 +287,37 @@
   }
   .group-filter-menu {
     display: none;
-    position: absolute;
-    top: calc(100% + 4px);
-    right: 0;
-    left: 0;
-    min-width: 240px;
-    max-height: 280px;
+    position: fixed;
+    min-width: 260px;
+    max-width: min(340px, 92vw);
+    max-height: min(360px, 55vh);
     overflow-y: auto;
     overflow-x: hidden;
     background: #fff;
     border: 1.5px solid #94b8d4;
     border-radius: 12px;
-    box-shadow: 0 12px 28px rgba(15, 61, 92, 0.2);
-    z-index: 1000;
+    box-shadow: 0 16px 40px rgba(15, 61, 92, 0.35);
+    z-index: 200000 !important;
     padding: 6px 0;
     direction: rtl;
     scrollbar-width: thin;
     scrollbar-color: #7bb8d9 #e8f0f6;
   }
-  .group-filter-menu.open { display: block; }
+  .group-filter-menu.open { display: block !important; }
+  .search-box {
+    z-index: 50 !important;
+    overflow: visible !important;
+  }
+  .group-filter-wrap {
+    z-index: 60 !important;
+    overflow: visible !important;
+  }
+  #panel-search {
+    overflow: visible !important;
+  }
+  .tabs {
+    overflow: visible !important;
+  }
   .group-filter-menu::-webkit-scrollbar { width: 10px; }
   .group-filter-menu::-webkit-scrollbar-track {
     background: linear-gradient(180deg, #eef5fa, #dde8f0);
@@ -3247,6 +3266,465 @@
     }
   }
 
+
+  /* دکمه مشاهده عکس در تب جستجو */
+  .btn-row-photo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid rgba(41, 128, 185, 0.35);
+    border-radius: 8px;
+    background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 45%, #7dd3fc 100%);
+    color: #0c4a6e;
+    font-family: Tahoma, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.9) inset,
+      0 2px 0 #0284c7,
+      0 3px 8px rgba(14, 165, 233, 0.2);
+    transition: transform 0.12s, filter 0.15s;
+  }
+  .btn-row-photo:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+  }
+  .btn-row-photo:active { transform: translateY(1px); }
+  td.photo-cell {
+    padding: 6px 8px !important;
+    vertical-align: middle;
+    width: 130px;
+  }
+
+  /* ===== ویندوز / دسکتاپ: تب جستجو — ستون‌ها حدود ۳ برابر ===== */
+  @media (min-width: 900px) {
+    #panel-search .table-container {
+      margin: 16px 24px 28px !important;
+      max-height: calc(100vh - 220px) !important;
+      overflow-x: auto !important;
+    }
+    #panel-search table {
+      table-layout: auto !important;
+      width: 100% !important;
+      min-width: 1100px !important;
+    }
+    #panel-search thead th {
+      padding: 14px 12px !important;
+    }
+    #panel-search thead th .th-pill {
+      padding: 10px 18px !important;
+      font-size: 1.05rem !important;
+      border-radius: 6px !important;
+    }
+    #panel-search tbody tr.main-row td {
+      padding: 18px 16px !important;
+      font-size: 1.15rem !important;
+    }
+    #panel-search td.col-row,
+    #panel-search th.col-row {
+      width: 70px !important;
+      min-width: 70px !important;
+      font-size: 1.1rem !important;
+    }
+    #panel-search td.col-row .cell-pill.row-num {
+      min-width: 48px !important;
+      padding: 8px 10px !important;
+      font-size: 1rem !important;
+    }
+    #panel-search td.title-cell,
+    #panel-search td.col-title {
+      min-width: 420px !important;
+      max-width: 720px !important;
+      font-size: 1.2rem !important;
+      font-weight: 700 !important;
+      white-space: normal !important;
+      line-height: 1.45 !important;
+    }
+    #panel-search td.title-cell .cell-pill {
+      max-width: 680px !important;
+      font-size: 1.15rem !important;
+      padding: 10px 18px !important;
+      white-space: normal !important;
+    }
+    #panel-search td.code-cell,
+    #panel-search td.col-code {
+      min-width: 220px !important;
+      width: 240px !important;
+      font-size: 1.15rem !important;
+    }
+    #panel-search td.code-cell .cell-pill {
+      font-size: 1.1rem !important;
+      padding: 10px 16px !important;
+    }
+    #panel-search td.action-cell,
+    #panel-search td.col-send,
+    #panel-search th.col-send {
+      width: 160px !important;
+      min-width: 150px !important;
+    }
+    #panel-search .btn-row-mizito {
+      font-size: 0.95rem !important;
+      padding: 12px 14px !important;
+      border-radius: 10px !important;
+    }
+    #panel-search td.photo-cell,
+    #panel-search td.col-photo,
+    #panel-search th.col-photo {
+      width: 150px !important;
+      min-width: 140px !important;
+    }
+    #panel-search .btn-row-photo {
+      font-size: 0.92rem !important;
+      padding: 12px 12px !important;
+      border-radius: 10px !important;
+    }
+    #panel-search .arrow-cell {
+      width: 36px !important;
+      font-size: 1.1rem !important;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    #panel-search table { min-width: 1280px !important; }
+    #panel-search td.title-cell,
+    #panel-search td.col-title {
+      min-width: 520px !important;
+      max-width: 900px !important;
+      font-size: 1.28rem !important;
+    }
+    #panel-search td.title-cell .cell-pill {
+      max-width: 860px !important;
+      font-size: 1.22rem !important;
+      padding: 12px 20px !important;
+    }
+    #panel-search td.code-cell,
+    #panel-search td.col-code {
+      min-width: 260px !important;
+      font-size: 1.22rem !important;
+    }
+    #panel-search td.code-cell .cell-pill {
+      font-size: 1.18rem !important;
+    }
+    #panel-search tbody tr.main-row td {
+      padding: 20px 18px !important;
+    }
+    #panel-search .btn-row-mizito,
+    #panel-search .btn-row-photo {
+      font-size: 1rem !important;
+      padding: 14px 16px !important;
+    }
+  }
+
+  @media (min-width: 1600px) {
+    #panel-search table { min-width: 1400px !important; }
+    #panel-search td.title-cell { min-width: 600px !important; max-width: 1000px !important; }
+  }
+
+
+  /* ===== اجبار اندازه بزرگ تب جستجو روی ویندوز + منوی فیلتر روی همه ===== */
+  .group-filter-menu {
+    z-index: 200000 !important;
+  }
+  .group-filter-wrap {
+    z-index: 60 !important;
+    overflow: visible !important;
+  }
+  .search-box {
+    z-index: 50 !important;
+    overflow: visible !important;
+    position: relative !important;
+  }
+  #panel-search,
+  #panel-search .table-container {
+    overflow-x: auto !important;
+  }
+  #panel-search {
+    overflow: visible !important;
+  }
+
+  #panel-search table {
+    table-layout: auto !important;
+    width: max-content !important;
+    min-width: 100% !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+  }
+
+  /* ستون‌ها — دسکتاپ ویندوز: خیلی بزرگ‌تر */
+  @media (min-width: 800px) {
+    #panel-search .table-container {
+      margin: 14px 16px 24px !important;
+      max-height: calc(100vh - 200px) !important;
+    }
+    #panel-search table {
+      min-width: 1500px !important;
+      width: max-content !important;
+    }
+    #panel-search thead th {
+      padding: 16px 14px !important;
+    }
+    #panel-search thead th .th-pill {
+      font-size: 1.15rem !important;
+      padding: 12px 20px !important;
+    }
+    /* ردیف */
+    #panel-search th:nth-child(1),
+    #panel-search td:nth-child(1),
+    #panel-search th.col-row,
+    #panel-search td.col-row {
+      width: 80px !important;
+      min-width: 80px !important;
+      max-width: 100px !important;
+      font-size: 1.2rem !important;
+      padding: 18px 12px !important;
+    }
+    #panel-search td .cell-pill.row-num {
+      min-width: 52px !important;
+      padding: 10px 12px !important;
+      font-size: 1.1rem !important;
+    }
+    /* عنوان — بزرگ */
+    #panel-search th:nth-child(2),
+    #panel-search td:nth-child(2),
+    #panel-search td.title-cell,
+    #panel-search td.col-title {
+      width: 520px !important;
+      min-width: 520px !important;
+      max-width: 720px !important;
+      font-size: 1.55rem !important;
+      font-weight: 700 !important;
+      padding: 20px 24px !important;
+      white-space: normal !important;
+      line-height: 1.45 !important;
+    }
+    #panel-search td.title-cell .cell-pill {
+      max-width: 680px !important;
+      font-size: 1.5rem !important;
+      padding: 14px 26px !important;
+      white-space: normal !important;
+    }
+    /* فلش */
+    #panel-search th:nth-child(3),
+    #panel-search td:nth-child(3),
+    #panel-search td.arrow-cell {
+      width: 44px !important;
+      min-width: 40px !important;
+      max-width: 52px !important;
+      padding: 10px 6px !important;
+      font-size: 1.2rem !important;
+    }
+    /* کد — بزرگ */
+    #panel-search th:nth-child(4),
+    #panel-search th.col-code,
+    #panel-search td:nth-child(4),
+    #panel-search td.code-cell,
+    #panel-search td.col-code {
+      width: 340px !important;
+      min-width: 320px !important;
+      max-width: 400px !important;
+      font-size: 1.5rem !important;
+      padding: 20px 20px !important;
+    }
+    #panel-search td.code-cell .cell-pill {
+      max-width: none !important;
+      font-size: 1.45rem !important;
+      padding: 12px 22px !important;
+    }
+    /* ارسال */
+    #panel-search th:nth-child(5),
+    #panel-search th.col-send,
+    #panel-search td:nth-child(5),
+    #panel-search td.action-cell,
+    #panel-search td.col-send {
+      width: 180px !important;
+      min-width: 170px !important;
+      max-width: 200px !important;
+      padding: 14px 12px !important;
+      vertical-align: middle !important;
+    }
+    #panel-search .btn-row-mizito {
+      width: 100% !important;
+      max-width: 170px !important;
+      font-size: 1rem !important;
+      padding: 14px 12px !important;
+      white-space: normal !important;
+      line-height: 1.3 !important;
+    }
+    /* عکس */
+    #panel-search th:nth-child(6),
+    #panel-search th.col-photo,
+    #panel-search td:nth-child(6),
+    #panel-search td.photo-cell,
+    #panel-search td.col-photo {
+      width: 170px !important;
+      min-width: 160px !important;
+      max-width: 190px !important;
+      padding: 14px 12px !important;
+      vertical-align: middle !important;
+    }
+    #panel-search .btn-row-photo {
+      width: 100% !important;
+      max-width: 160px !important;
+      font-size: 1rem !important;
+      padding: 14px 12px !important;
+      display: inline-flex !important;
+    }
+    #panel-search tbody tr.main-row td {
+      padding-top: 18px !important;
+      padding-bottom: 18px !important;
+    }
+    .clk-miladi {
+      font-size: 1.28rem !important;
+      margin-top: 2mm !important;
+      font-weight: 700 !important;
+    }
+    .header-clock { gap: 2mm !important; }
+    .clk-shamsi { font-size: 1.4rem !important; }
+  }
+
+  @media (min-width: 1280px) {
+    #panel-search table { min-width: 1700px !important; }
+    #panel-search th:nth-child(2),
+    #panel-search td:nth-child(2),
+    #panel-search td.title-cell {
+      width: 640px !important;
+      min-width: 640px !important;
+      max-width: 800px !important;
+      font-size: 1.65rem !important;
+    }
+    #panel-search td.title-cell .cell-pill {
+      font-size: 1.6rem !important;
+      max-width: 760px !important;
+    }
+    #panel-search th:nth-child(4),
+    #panel-search td.code-cell {
+      width: 380px !important;
+      min-width: 360px !important;
+      font-size: 1.55rem !important;
+    }
+    #panel-search td.code-cell .cell-pill {
+      font-size: 1.5rem !important;
+    }
+  }
+
+/* دکمه آسا اترس لیان — متن وسط + عمق بیشتر */
+  a.brand-name,
+  .brand-name {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    line-height: 1.25 !important;
+    padding: 12px 26px !important;
+    border-radius: 14px !important;
+    font-size: 1.05rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.04em !important;
+    color: #0f3d5c !important;
+    background: linear-gradient(180deg, #ffffff 0%, #eef6fb 40%, #c5e0f5 100%) !important;
+    border: 1px solid rgba(255,255,255,0.85) !important;
+    border-bottom-color: rgba(15, 61, 92, 0.28) !important;
+    text-shadow:
+      0 1px 0 rgba(255,255,255,0.95),
+      0 -1px 0 rgba(0,0,0,0.06) !important;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.98) inset,
+      0 -2px 0 rgba(15, 61, 92, 0.14) inset,
+      0 4px 0 #1a5276,
+      0 6px 14px rgba(0,0,0,0.28),
+      0 2px 4px rgba(0,0,0,0.12) !important;
+    transition: transform 0.12s, box-shadow 0.15s, filter 0.15s !important;
+  }
+  a.brand-name:hover,
+  .brand-name:hover {
+    filter: brightness(1.04);
+    transform: translateY(-2px);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.98) inset,
+      0 -2px 0 rgba(15, 61, 92, 0.14) inset,
+      0 5px 0 #1a5276,
+      0 8px 18px rgba(0,0,0,0.3),
+      0 2px 4px rgba(0,0,0,0.12) !important;
+  }
+  a.brand-name:active,
+  .brand-name:active {
+    transform: translateY(2px);
+    box-shadow:
+      0 1px 3px rgba(0,0,0,0.15) inset,
+      0 1px 0 #1a5276,
+      0 2px 6px rgba(0,0,0,0.18) !important;
+  }
+
+
+  /* ستون گروه در تب جستجو */
+  #panel-search td.col-group-search,
+  #panel-search th.col-group-search {
+    text-align: center !important;
+    vertical-align: middle !important;
+  }
+  #panel-search td.col-group-search .cell-pill {
+    font-size: 0.9rem;
+    max-width: 160px;
+  }
+  @media (min-width: 800px) {
+    #panel-search th.col-group-search,
+    #panel-search td.col-group-search,
+    #panel-search th:nth-child(7),
+    #panel-search td:nth-child(7) {
+      width: 160px !important;
+      min-width: 150px !important;
+      max-width: 200px !important;
+      font-size: 1.15rem !important;
+      padding: 16px 12px !important;
+    }
+    #panel-search td.col-group-search .cell-pill {
+      font-size: 1.1rem !important;
+      padding: 10px 14px !important;
+      max-width: 180px !important;
+    }
+    #panel-search table {
+      min-width: 1650px !important;
+    }
+  }
+  @media (min-width: 1280px) {
+    #panel-search table { min-width: 1850px !important; }
+    #panel-search th.col-group-search,
+    #panel-search td.col-group-search {
+      min-width: 170px !important;
+      font-size: 1.2rem !important;
+    }
+  }
+
+  /* تب فهرست: عنوان کالا — هدر وسط ستون، متن زیر همان دکمه */
+  .list-table th.col-title {
+    text-align: center !important;
+  }
+  .list-table th.col-title .th-filter-wrap {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    gap: 6px !important;
+  }
+  .list-table th.col-title .th-pill {
+    margin: 0 auto !important;
+  }
+  .list-table td.title-cell.col-title,
+  .list-table td.title-cell.list-plain,
+  .list-table td.col-title {
+    text-align: center !important;
+    direction: rtl !important;
+  }
+  .list-table td.title-cell .cell-pill {
+    margin: 0 auto !important;
+    text-align: center !important;
+  }
+
 </style>
 </head>
 <body>
@@ -3427,7 +3905,7 @@
   <table>
     <thead>
       <tr>
-        <th style="width:42px"><span class="th-pill">ردیف</span></th>
+        <th class="col-row" style="width:56px"><span class="th-pill">ردیف</span></th>
         <th><div class="th-filter-wrap"><span class="th-pill">عنوان کالا</span><button type="button" class="col-filter-btn" data-col="title" data-table="search" title="فیلتر">▼</button>
             <div class="col-filter-menu" data-col="title" data-table="search">
               <button type="button" data-action="sort-asc">▲ مرتب‌سازی صعودی</button>
@@ -3438,7 +3916,7 @@
               <button type="button" data-action="clear-filter">پاک کردن فیلتر</button>
             </div></div></th>
         <th class="col-arrow" style="width:22px" title="ضربه برای مشخصات"></th>
-        <th style="width:160px"><div class="th-filter-wrap"><span class="th-pill">کد کالا</span><button type="button" class="col-filter-btn" data-col="code" data-table="search" title="فیلتر">▼</button>
+        <th class="col-code" style="width:200px"><div class="th-filter-wrap"><span class="th-pill">کد کالا</span><button type="button" class="col-filter-btn" data-col="code" data-table="search" title="فیلتر">▼</button>
             <div class="col-filter-menu" data-col="code" data-table="search">
               <button type="button" data-action="sort-asc">▲ مرتب‌سازی صعودی</button>
               <button type="button" data-action="sort-desc">▼ مرتب‌سازی نزولی</button>
@@ -3447,7 +3925,9 @@
               <button type="button" data-action="apply-filter">اعمال فیلتر</button>
               <button type="button" data-action="clear-filter">پاک کردن فیلتر</button>
             </div></div></th>
-        <th style="width:110px"><span class="th-pill">ارسال</span></th>
+        <th class="col-send" style="width:140px"><span class="th-pill">ارسال</span></th>
+        <th class="col-photo" style="width:130px"><span class="th-pill">مشاهده عکس</span></th>
+        <th class="col-group-search" style="width:140px"><span class="th-pill">گروه کالا</span></th>
       </tr>
     </thead>
     <tbody id="resultsBody"></tbody>
@@ -4261,7 +4741,7 @@ function render() {
     if (prevGroup !== null && g !== prevGroup) {
       var sep = document.createElement("tr");
       sep.className = "group-sep";
-      sep.innerHTML = '<td colspan="4"></td>';
+      sep.innerHTML = '<td colspan="7"></td>';
       resultsBody.appendChild(sep);
     }
     prevGroup = g;
@@ -4282,15 +4762,21 @@ function render() {
     tr.dataset.index = String(idx);
     var copyText = (item.code ? item.code + "\n" : "") + (item.title || "");
     tr.innerHTML =
-      '<td><span class="cell-pill row-num">' + realRow + '</span></td>' +
-      '<td class="title-cell"><span class="cell-pill">' + escapeHtml(item.title) + '</span></td>' +
+      '<td class="col-row"><span class="cell-pill row-num">' + realRow + '</span></td>' +
+      '<td class="title-cell col-title"><span class="cell-pill">' + escapeHtml(item.title) + '</span></td>' +
       '<td class="arrow-cell"><span class="detail-arrow" aria-hidden="true">▼</span></td>' +
-      '<td class="code-cell"><span class="cell-pill code-full">' + escapeHtml(item.code) + '</span></td>' +
-      '<td class="action-cell"><button type="button" class="btn-row-mizito" title="کپی کد و عنوان و باز کردن میزیتو">ارسال به میزیتو</button></td>';
+      '<td class="code-cell col-code"><span class="cell-pill code-full">' + escapeHtml(item.code) + '</span></td>' +
+      '<td class="action-cell col-send"><button type="button" class="btn-row-mizito" title="کپی کد و عنوان و باز کردن میزیتو">ارسال به میزیتو</button></td>' +
+      '<td class="photo-cell col-photo"><button type="button" class="btn-row-photo" title="جستجوی عکس در گوگل">🖼 مشاهده عکس</button></td>' +
+      '<td class="group-cell col-group-search"><span class="cell-pill">' + escapeHtml(item.group || "—") + '</span></td>';
 
     tr.querySelector(".btn-row-mizito").addEventListener("click", function(e) {
       e.stopPropagation();
       sendToMizito(copyText, e.currentTarget);
+    });
+    tr.querySelector(".btn-row-photo").addEventListener("click", function(e) {
+      e.stopPropagation();
+      openPhoto(item.title);
     });
 
     tr.addEventListener("click", function() {
@@ -4336,7 +4822,7 @@ function toggleDetail(idx, item, row) {
 
   var detailTr = document.createElement("tr");
   detailTr.className = "detail-row";
-  detailTr.innerHTML = '<td colspan="5">' + buildDetailHtml(item) + "</td>";
+  detailTr.innerHTML = '<td colspan="7">' + buildDetailHtml(item) + "</td>";
 
   detailTr.addEventListener("click", function(e) {
     e.stopPropagation();
@@ -4661,6 +5147,86 @@ searchInput.addEventListener("input", function() {
   searchDebounceTimer = setTimeout(doSearch, 120);
 });
 groupFilter.addEventListener("change", doSearch);
+
+/* ===== منوی فیلتر گروه / انبار (همه کالاها) ===== */
+(function initGroupFilterMenu() {
+  var btn = document.getElementById("groupFilterBtn");
+  var menu = document.getElementById("groupFilterMenu");
+  var hidden = document.getElementById("groupFilter");
+  if (!btn || !menu || !hidden) return;
+
+  function closeMenu() {
+    menu.classList.remove("open");
+    btn.classList.remove("open");
+  }
+  function positionMenu() {
+    var rect = btn.getBoundingClientRect();
+    var menuW = Math.max(260, menu.offsetWidth || 260);
+    var menuH = Math.min(360, window.innerHeight * 0.55);
+    // راست‌چین زیر دکمه (RTL)
+    var right = window.innerWidth - rect.right;
+    if (right < 8) right = 8;
+    var top = rect.bottom + 6;
+    if (top + 200 > window.innerHeight) {
+      top = Math.max(8, rect.top - menuH - 6);
+    }
+    menu.style.top = top + "px";
+    menu.style.right = right + "px";
+    menu.style.left = "auto";
+    menu.style.bottom = "auto";
+    menu.style.maxHeight = menuH + "px";
+  }
+  function openMenu() {
+    // انتقال به body تا زیر جدول نرود
+    if (menu.parentElement !== document.body) {
+      document.body.appendChild(menu);
+    }
+    menu.classList.add("open");
+    btn.classList.add("open");
+    positionMenu();
+    requestAnimationFrame(positionMenu);
+  }
+  function toggleMenu(e) {
+    if (e) { e.preventDefault(); e.stopPropagation(); }
+    if (menu.classList.contains("open")) closeMenu();
+    else openMenu();
+  }
+
+  btn.addEventListener("click", toggleMenu);
+  btn.addEventListener("pointerdown", function(e) { e.stopPropagation(); });
+  window.addEventListener("resize", function() {
+    if (menu.classList.contains("open")) positionMenu();
+  });
+  window.addEventListener("scroll", function() {
+    if (menu.classList.contains("open")) positionMenu();
+  }, true);
+
+  menu.addEventListener("click", function(e) {
+    var opt = e.target.closest("[data-value]");
+    if (!opt) return;
+    e.stopPropagation();
+    var val = opt.getAttribute("data-value") || "";
+    hidden.value = val;
+    // برچسب دکمه
+    var label = (opt.textContent || "").replace(/^📦\s*/, "").trim() || "همه کالاها";
+    btn.textContent = label;
+    // selected
+    menu.querySelectorAll(".selected").forEach(function(el) { el.classList.remove("selected"); });
+    opt.classList.add("selected");
+    closeMenu();
+    doSearch();
+  });
+
+  document.addEventListener("click", function(e) {
+    if (!menu.classList.contains("open")) return;
+    if (e.target.closest("#groupFilterMenu") || e.target.closest("#groupFilterBtn")) return;
+    closeMenu();
+  });
+  document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") closeMenu();
+  });
+})();
+
 /* بارگذاری داده از GitHub (یا پشتیبان محلی) سپس نمایش */
 loadDataThenBoot();
 
