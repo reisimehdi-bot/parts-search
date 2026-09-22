@@ -3118,6 +3118,128 @@
     }
   }
 
+
+  /* ===== دسکتاپ / صفحه بزرگ (ویندوز و مانیتور) ===== */
+  @media (min-width: 900px) {
+    body { font-size: 16px; }
+    header {
+      padding: 18px 28px 22px;
+    }
+    .clk-time { font-size: 2.35rem !important; letter-spacing: 0.14em !important; }
+    .clk-shamsi { font-size: 1.45rem !important; }
+    .clk-miladi { font-size: 1.05rem !important; }
+    .clk-title { font-size: 0.9rem !important; }
+    .brand-name { font-size: 0.88rem; padding: 6px 16px; }
+    .search-box {
+      margin: 0 24px;
+      padding: 20px 28px;
+      gap: 16px;
+      border-radius: 0 0 16px 16px;
+    }
+    .search-box label { font-size: 1.05rem; }
+    #searchInput {
+      min-width: 280px;
+      padding: 13px 18px;
+      font-size: 1.08rem;
+      border-radius: 12px;
+    }
+    .group-filter-wrap {
+      min-width: 240px;
+      max-width: 320px;
+    }
+    #groupFilterBtn {
+      padding: 13px 40px 13px 16px;
+      font-size: 1rem;
+    }
+    .table-container,
+    .list-table-container {
+      margin: 16px 24px 32px;
+      max-height: calc(100vh - 240px);
+      border-radius: 16px;
+    }
+    table { font-size: 1rem; }
+    thead th {
+      padding: 12px 10px !important;
+    }
+    thead th .th-pill {
+      padding: 8px 16px;
+      font-size: 0.92rem;
+      border-radius: 6px;
+    }
+    td {
+      padding: 14px 12px;
+      font-size: 0.95rem;
+    }
+    .title-cell {
+      min-width: 200px;
+      max-width: 420px;
+      font-size: 0.98rem;
+    }
+    .title-cell.long-title { font-size: 0.88rem; }
+    .title-cell.very-long-title { font-size: 0.8rem; }
+    .code-cell {
+      min-width: 140px;
+      font-size: 0.95rem;
+      padding: 10px 12px;
+    }
+    .stock-cell,
+    .col-stock {
+      min-width: 72px;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .col-group, .col-family, .col-commercial, .col-manufacturer {
+      min-width: 100px;
+      font-size: 0.9rem;
+    }
+    .col-row { min-width: 48px; font-size: 0.9rem; }
+    .detail-inner { padding: 22px 28px 24px; }
+    .detail-grid {
+      grid-template-columns: 140px 1fr;
+      gap: 10px 20px;
+      font-size: 1rem;
+      padding: 16px 20px;
+    }
+    .detail-actions button {
+      padding: 10px 16px;
+      font-size: 0.88rem;
+    }
+    footer {
+      padding: 20px 28px 36px;
+      font-size: 0.88rem;
+    }
+    .tabs { margin: 0 24px; }
+    .tab-btn { padding: 12px 22px; font-size: 0.98rem; }
+  }
+
+  @media (min-width: 1280px) {
+    .table-container,
+    .list-table-container {
+      margin: 18px 32px 36px;
+      max-height: calc(100vh - 250px);
+    }
+    table { font-size: 1.05rem; }
+    td { padding: 16px 14px; }
+    .title-cell {
+      min-width: 260px;
+      max-width: 520px;
+      font-size: 1.05rem;
+    }
+    .code-cell { min-width: 160px; font-size: 1rem; }
+    thead th .th-pill { font-size: 0.98rem; padding: 9px 18px; }
+    #searchInput { font-size: 1.12rem; padding: 14px 20px; }
+  }
+
+  @media (min-width: 1600px) {
+    .table-container,
+    .list-table-container {
+      margin: 20px 48px 40px;
+    }
+    .search-box { margin: 0 48px; padding: 22px 32px; }
+    .tabs { margin: 0 48px; }
+    .title-cell { max-width: 640px; }
+  }
+
 </style>
 </head>
 <body>
@@ -3425,6 +3547,149 @@ var GITHUB_DATA_URL = "";
 var GITHUB_STOCK_CSV_URL = "https://raw.githubusercontent.com/reisimehdi-bot/parts-search/main/stock.csv";
 var GITHUB_STOCK_JSON_URL = "https://raw.githubusercontent.com/reisimehdi-bot/parts-search/main/stock_update.json";
 
+/* ===== به‌روزرسانی موجودی از GitHub (CSV سپس JSON) — روی کامپیوتر و موبایل ===== */
+var stockSource = "embedded"; // embedded | csv | json | cache
+
+function parseStockCsv(text) {
+  var map = {};
+  if (!text) return map;
+  var lines = String(text).replace(/^\uFEFF/, "").split(/\r?\n/);
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i].trim();
+    if (!line) continue;
+    // رد کردن هدر
+    if (i === 0 && /^code\s*,/i.test(line)) continue;
+    var comma = line.indexOf(",");
+    if (comma < 0) continue;
+    var code = line.slice(0, comma).trim();
+    var stock = line.slice(comma + 1).trim();
+    if (!code) continue;
+    map[code] = stock;
+  }
+  return map;
+}
+
+function applyStockMap(map, sourceLabel) {
+  if (!map || typeof map !== "object") return 0;
+  var n = 0;
+  for (var i = 0; i < DATA.length; i++) {
+    var code = DATA[i].code;
+    if (code != null && Object.prototype.hasOwnProperty.call(map, code)) {
+      DATA[i].stock = map[code];
+      n++;
+    }
+  }
+  if (n > 0) {
+    stockSource = sourceLabel || "remote";
+    try {
+      localStorage.setItem("parts_stock_cache_v1", JSON.stringify({
+        updated: new Date().toISOString().slice(0, 10),
+        stocks: map
+      }));
+    } catch (e) {}
+  }
+  return n;
+}
+
+function loadStockFromCache() {
+  try {
+    var raw = localStorage.getItem("parts_stock_cache_v1");
+    if (!raw) return false;
+    var payload = JSON.parse(raw);
+    if (!payload || !payload.stocks) return false;
+    var n = applyStockMap(payload.stocks, "cache");
+    return n > 0;
+  } catch (e) {
+    return false;
+  }
+}
+
+function fetchText(url, timeoutMs) {
+  timeoutMs = timeoutMs || 10000;
+  var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+  var timer = setTimeout(function() {
+    if (ctrl) try { ctrl.abort(); } catch (e) {}
+  }, timeoutMs);
+  var opts = { cache: "no-store", mode: "cors" };
+  if (ctrl) opts.signal = ctrl.signal;
+  return fetch(url, opts)
+    .then(function(res) {
+      clearTimeout(timer);
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      return res.text();
+    })
+    .catch(function(err) {
+      clearTimeout(timer);
+      throw err;
+    });
+}
+
+function loadStockThen(cb) {
+  var csvUrl = (GITHUB_STOCK_CSV_URL || "").trim();
+  var jsonUrl = (GITHUB_STOCK_JSON_URL || "").trim();
+
+  function done() {
+    if (typeof cb === "function") cb();
+  }
+
+  // ۱) CSV
+  if (csvUrl) {
+    fetchText(csvUrl, 10000)
+      .then(function(text) {
+        var map = parseStockCsv(text);
+        var n = applyStockMap(map, "csv");
+        if (n > 0) {
+          done();
+          return;
+        }
+        throw new Error("empty csv map");
+      })
+      .catch(function() {
+        // ۲) JSON
+        if (!jsonUrl) {
+          if (!loadStockFromCache()) stockSource = "embedded";
+          done();
+          return;
+        }
+        fetchText(jsonUrl, 10000)
+          .then(function(text) {
+            var payload = JSON.parse(text);
+            var map = (payload && payload.stocks) ? payload.stocks : payload;
+            var n = applyStockMap(map, "json");
+            if (n < 1 && !loadStockFromCache()) stockSource = "embedded";
+            done();
+          })
+          .catch(function() {
+            if (!loadStockFromCache()) stockSource = "embedded";
+            done();
+          });
+      });
+    return;
+  }
+
+  // فقط JSON
+  if (jsonUrl) {
+    fetchText(jsonUrl, 10000)
+      .then(function(text) {
+        var payload = JSON.parse(text);
+        var map = (payload && payload.stocks) ? payload.stocks : payload;
+        var n = applyStockMap(map, "json");
+        if (n < 1 && !loadStockFromCache()) stockSource = "embedded";
+        done();
+      })
+      .catch(function() {
+        if (!loadStockFromCache()) stockSource = "embedded";
+        done();
+      });
+    return;
+  }
+
+  if (!loadStockFromCache()) stockSource = "embedded";
+  done();
+}
+
+
+
 var DATA = FALLBACK_DATA.slice();
 var WAREHOUSE = JSON.parse(JSON.stringify(FALLBACK_WAREHOUSE));
 var dataSource = "local"; // local | github | cache
@@ -3466,15 +3731,22 @@ function loadFromCache() {
 function updateDataStatus() {
   var el = document.getElementById("dataStatus");
   if (!el) return;
+  var stockNote = "";
+  if (typeof stockSource !== "undefined") {
+    if (stockSource === "csv") stockNote = " · موجودی از CSV";
+    else if (stockSource === "json") stockNote = " · موجودی از JSON";
+    else if (stockSource === "cache") stockNote = " · موجودی از کش";
+    else stockNote = " · موجودی داخلی";
+  }
   if (dataSource === "github") {
-    el.textContent = "لیست از اینترنت به‌روز شد · " + DATA.length + " مورد";
+    el.textContent = "لیست از اینترنت به‌روز شد · " + DATA.length + " مورد" + stockNote;
     el.style.color = "#1e8e50";
   } else if (dataSource === "cache") {
-    el.textContent = "لیست از حافظه قبلی · " + DATA.length + " مورد (آفلاین)";
+    el.textContent = "لیست از حافظه قبلی · " + DATA.length + " مورد (آفلاین)" + stockNote;
     el.style.color = "#b45309";
   } else {
-    el.textContent = "لیست داخلی · " + DATA.length + " مورد";
-    el.style.color = "#64748b";
+    el.textContent = "لیست داخلی · " + DATA.length + " مورد" + stockNote;
+    el.style.color = stockSource === "csv" || stockSource === "json" ? "#1e8e50" : "#64748b";
   }
 }
 
@@ -3484,12 +3756,15 @@ function loadDataThenBoot() {
   var isPlaceholder = !url || url.indexOf("USERNAME_PLACEHOLDER") !== -1 || url.indexOf("REPO_PLACEHOLDER") !== -1;
 
   function finish() {
-    try {
-      if (typeof totalCount !== "undefined" && totalCount) totalCount.textContent = DATA.length;
-    } catch (e) {}
-    updateDataStatus();
-    if (typeof doSearch === "function") doSearch();
-    if (typeof renderFullList === "function") renderFullList();
+    // همیشه موجودی را از GitHub (یا کش) به‌روز کن — روی کامپیوتر و موبایل
+    loadStockThen(function() {
+      try {
+        if (typeof totalCount !== "undefined" && totalCount) totalCount.textContent = DATA.length;
+      } catch (e) {}
+      updateDataStatus();
+      if (typeof doSearch === "function") doSearch();
+      if (typeof renderFullList === "function") renderFullList();
+    });
   }
 
   if (isPlaceholder) {
