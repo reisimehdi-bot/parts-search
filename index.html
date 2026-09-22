@@ -3553,17 +3553,27 @@ var stockSource = "embedded"; // embedded | csv | json | cache
 function parseStockCsv(text) {
   var map = {};
   if (!text) return map;
-  var lines = String(text).replace(/^\uFEFF/, "").split(/\r?\n/);
+  // حذف BOM و نرمال‌سازی خطوط ویندوز/مک
+  var lines = String(text).replace(/^\uFEFF/, "").replace(/\r\n/g, "\n").replace(/\r/g, "\n").split("\n");
   for (var i = 0; i < lines.length; i++) {
     var line = lines[i].trim();
     if (!line) continue;
     // رد کردن هدر
-    if (i === 0 && /^code\s*,/i.test(line)) continue;
-    var comma = line.indexOf(",");
-    if (comma < 0) continue;
-    var code = line.slice(0, comma).trim();
-    var stock = line.slice(comma + 1).trim();
+    if (/^code\s*[,;\t]/i.test(line)) continue;
+    // پشتیبانی از کاما، نقطه‌ویرگول (اکسل بعضی مناطق)، تب
+    var sep = line.indexOf(",");
+    if (sep < 0) sep = line.indexOf(";");
+    if (sep < 0) sep = line.indexOf("\t");
+    if (sep < 0) continue;
+    var code = line.slice(0, sep).trim().replace(/^["']|["']$/g, "");
+    var stock = line.slice(sep + 1).trim().replace(/^["']|["']$/g, "");
+    // حذف اعراب عربی احتمالی در کد
+    code = code.replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g, "").trim();
     if (!code) continue;
+    // کد ناقص فقط عددی (مثل 1000 یا 3000) رد شود
+    if (/^\d{3,4}$/.test(code)) continue;
+    // نرمال‌سازی موجودی
+    if (stock === "-" || stock === "—" || stock === "–" || stock.toLowerCase() === "n/a") stock = "";
     map[code] = stock;
   }
   return map;
@@ -3574,8 +3584,15 @@ function applyStockMap(map, sourceLabel) {
   var n = 0;
   for (var i = 0; i < DATA.length; i++) {
     var code = DATA[i].code;
-    if (code != null && Object.prototype.hasOwnProperty.call(map, code)) {
-      DATA[i].stock = map[code];
+    if (code == null) continue;
+    // تطبیق با حذف اعراب احتمالی
+    var key = String(code).replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g, "").trim();
+    var val = null;
+    if (Object.prototype.hasOwnProperty.call(map, key)) val = map[key];
+    else if (Object.prototype.hasOwnProperty.call(map, code)) val = map[code];
+    if (val != null) {
+      if (val === "-" || val === "—" || val === "–") val = "";
+      DATA[i].stock = val;
       n++;
     }
   }
@@ -3605,14 +3622,16 @@ function loadStockFromCache() {
 }
 
 function fetchText(url, timeoutMs) {
-  timeoutMs = timeoutMs || 10000;
+  timeoutMs = timeoutMs || 12000;
   var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
   var timer = setTimeout(function() {
     if (ctrl) try { ctrl.abort(); } catch (e) {}
   }, timeoutMs);
-  var opts = { cache: "no-store", mode: "cors" };
+  // جلوگیری از کش قدیمی روی ویندوز/کروم: query param زمان
+  var bust = (url.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+  var opts = { cache: "no-store", mode: "cors", credentials: "omit" };
   if (ctrl) opts.signal = ctrl.signal;
-  return fetch(url, opts)
+  return fetch(url + bust, opts)
     .then(function(res) {
       clearTimeout(timer);
       if (!res.ok) throw new Error("HTTP " + res.status);
