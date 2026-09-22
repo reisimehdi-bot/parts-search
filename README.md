@@ -38,8 +38,8 @@ code,stock
 داخل `index.html` این دو خط را با آدرس ریپوی خودتان پر کنید:
 
 ```javascript
-var GITHUB_STOCK_CSV_URL = "https://raw.githubusercontent.com/reisimehdi-bot/reisimehdi-bot/main/stock.csv";
-var GITHUB_STOCK_JSON_URL = "https://raw.githubusercontent.com/reisimehdi-bot/reisimehdi-bot/main/stock_update.json";
+var GITHUB_STOCK_CSV_URL = "https://raw.githubusercontent.com/reisimehdi-bot/parts-search/main/stock.csv";
+var GITHUB_STOCK_JSON_URL = "https://raw.githubusercontent.com/reisimehdi-bot/parts-search/main/stock_update.json";
 ```
 
 `GITHUB_DATA_URL` را خالی بگذارید تا کل کاتالوگ عوض نشود.
